@@ -73,20 +73,68 @@
 
 
 
-from time import sleep
+# from time import sleep
 
 
-def count(coun,cou):
-    sleep(0.3)
-    if coun == 0:
-        cou = False
-        count(coun-1)
-        print(coun)
-    else:
-        cou ==10
-        coun = False
-        count(cou+1)
-        print(cou)
-        print("Finished")
-count(10,True)
+# def count(coun,cou):
+#     sleep(0.3)
+#     if coun == 0:
+#         cou = False
+#         count(coun-1)
+#         print(coun)
+#     else:
+#         cou ==10
+#         coun = False
+#         count(cou+1)
+#         print(cou)
+#         print("Finished")
+# count(10,True)
 
+
+# a = 0
+# b = ""
+# while True:
+#     try:
+#         a= int(input("Input a number here: "))
+#     except:
+#         print("Looks like you entered a string not an integer.")
+#     else:
+#         print(f"You entered, {a}")
+#     finally:
+#         ("I am gonna run anyway")
+            
+#     b = str(input("Input a word here: "))
+
+#     if a == 1:
+#         print("hello")
+
+#     if b == "lol":
+#         print("haha")
+
+#     try:
+#         if a + b == 3:
+#             print("hihihi")
+#     except Exception as e:
+#         print(e)
+#         print("Looks like this does not work.")
+
+
+
+b = 2
+def test_input():
+    global b
+    try:
+        _a =  int(input("Please enter an integer: "))
+        return _a
+    except Exception as e:
+        print(e)
+    finally:
+        b = 3
+        print("hello")
+        _a = 3
+        
+    
+
+a = 3
+a = test_input()
+print (a+b)
