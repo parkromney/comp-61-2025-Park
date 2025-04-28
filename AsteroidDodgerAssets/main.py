@@ -2,32 +2,32 @@ import pygame
 import random
 from pygame import mixer
 
-# Initialize
+
 pygame.init()
 screen = pygame.display.set_mode((900, 600))
 pygame.display.set_caption("Asteroid Dodger")
 
-# Background
+
 background = pygame.image.load("AsteroidDodgerAssets/space_bg.jpg")
 background = pygame.transform.scale(background, (900, 600))
 
-# Sounds
+
 mixer.music.load("AsteroidDodgerAssets/space_ambience.mp3")
 mixer.music.play(-1)
 catch_sound = mixer.Sound("AsteroidDodgerAssets/catch.mp3")
 hit_sound = mixer.Sound("AsteroidDodgerAssets/hit.mp3")
 
-# Fonts
+
 font = pygame.font.SysFont('Comic Sans MS', 24)
 title_font = pygame.font.SysFont('Comic Sans MS', 42)
 
-# Player
+
 player_img = pygame.image.load("AsteroidDodgerAssets/catcher_ship.png")
 player_img = pygame.transform.scale(player_img, (64, 64))
 player_x = 370
 player_y = 500
 
-# Object setup
+
 object_img = []
 object_x = []
 object_y = []
@@ -40,7 +40,7 @@ gas_can_img = pygame.transform.scale(gas_can_img, (75, 75))
 debris_img = pygame.image.load("AsteroidDodgerAssets/debris.png")
 debris_img = pygame.transform.scale(debris_img, (75, 75))
 
-# Score and Meter
+
 score_value = 0
 debris_hits = 0
 max_debris_hits = 10
@@ -48,7 +48,7 @@ meter_value = 100
 new_meter_decrease_rate = 0.1 / 2
 meter_fill_rate = 10
 
-# Splash screen
+
 def splash_screen():
     splash_img = pygame.image.load("AsteroidDodgerAssets/splash_bg.png")
     splash_img = pygame.transform.scale(splash_img, (900, 600))
@@ -79,7 +79,7 @@ def splash_screen():
         pygame.display.update()
         pygame.time.delay(30)
 
-# Buttons
+
 def draw_button(text, x, y, width, height, inactive_color, active_color, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
@@ -146,23 +146,43 @@ def quit_game():
 
 def story_screen():
     story_running = True
+    lines = [
+        "In 3057, Earth exploded from human greed.",
+        "You escaped — the last survivor — but with little fuel.",
+        "Now, drifting among the wreckage,",
+        "you must collect gas to reach Planet Park —",
+        "the last sustainable planet where humans survive.",
+        "Dodge debris, gather gas, and secure humanity's future!"
+    ]
+
+    current_line = 0
+    fade_surface = pygame.Surface((900, 600))
+    fade_surface.fill((0, 0, 0))
+    fade_alpha = 255
+    clock = pygame.time.Clock()
+
     while story_running:
         screen.fill((0, 0, 0))
-        
-        lines = [
-            "In 3057, Earth exploded from human greed.",
-            "You escaped — the last survivor — but with little fuel.",
-            "Now, drifting among the wreckage,",
-            "you must collect gas to reach Planet Park —",
-            "the last sustainable planet where humans survive.",
-            "Dodge debris, gather gas, and secure humanity's future!"
-        ]
-        
-        for i, line in enumerate(lines):
-            text = font.render(line, True, (255, 255, 255))
+
+       
+        for i in range(current_line):
+            text = font.render(lines[i], True, (255, 255, 255))
             screen.blit(text, (50, 100 + i * 40))
-        
-        draw_button("Continue", 350, 450, 200, 50, (100, 100, 255), (50, 50, 200), title_screen)
+
+        if current_line < len(lines):
+            text = font.render(lines[current_line], True, (255, 255, 255))
+            screen.blit(text, (50, 100 + current_line * 40))
+
+            fade_surface.set_alpha(fade_alpha)
+            screen.blit(fade_surface, (0, 0))
+            fade_alpha -= 5 
+
+            if fade_alpha <= 0:
+                current_line += 1
+                fade_alpha = 255
+                pygame.time.delay(500) 
+
+        draw_button("Continue", 350, 500, 200, 50, (100, 100, 255), (50, 50, 200), title_screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -170,6 +190,7 @@ def story_screen():
                 exit()
 
         pygame.display.update()
+        clock.tick(60)
 
 def game_over_screen():
     while True:
@@ -208,7 +229,7 @@ def win_screen():
                 exit()
         pygame.display.update()
 
-# UI Functions
+
 def show_score():
     score = font.render("Score : " + str(score_value), True, (255, 255, 255))
     screen.blit(score, (10, 10))
@@ -223,7 +244,6 @@ def show_meter():
     meter_text = font.render(f"Gas Meter: {int(meter_value)}%", True, (255, 255, 255))
     screen.blit(meter_text, (320, 70))
 
-# Main Game Logic
 def start_game():
     global score_value, debris_hits, meter_value
     global object_img, object_x, object_y, object_y_change, object_type
@@ -259,7 +279,7 @@ def start_game():
                 exit()
 
         player_x, _ = pygame.mouse.get_pos()
-        player_x -= 32  # center the image
+        player_x -= 32 
         player_x = max(0, min(player_x, 836))
         screen.blit(player_img, (player_x, player_y))
 
@@ -309,6 +329,5 @@ def start_game():
         pygame.display.update()
         clock.tick(60)
 
-# Start Game
 splash_screen()
 story_screen()
