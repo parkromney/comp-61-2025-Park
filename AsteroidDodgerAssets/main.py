@@ -123,6 +123,7 @@ def show_instructions():
             "Every 10 gas cans collected makes the round go faster.",
             "Avoid debris. Hitting 10 of them ends the game.",
             "If the gas meter runs out, the game is over!",
+            "The objects get smaller as the game goes on.",
             "Collect 75 gas cans to win!"
         ]
         for i, line in enumerate(instructions):
@@ -267,7 +268,7 @@ def start_game():
     score_value = 0
     debris_hits = 0
     meter_value = 100
-    object_speed = 4
+    object_speed = 5
     new_meter_decrease_rate = 0.05
 
     gas_cans_collected = 0  # Track only gas cans collected (not all scores)
